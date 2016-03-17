@@ -7,6 +7,8 @@ $(document).ready(function() {
       $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=f8eca089b2dc20d458b0079a2d2dcd13', function(json) {
         
         $(".city").html('<h1>' + json['name'] + '</h1>');  
+        $(".temperature").html('<h2>' + json['main'].temp + '&deg <span id="temp-conversion">F</span></h2>');
+        console.log(json['main'].temp);
         $(".result").html(JSON.stringify(json));
       }); 
     });
