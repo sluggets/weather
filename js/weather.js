@@ -4,11 +4,11 @@ $(document).ready(function() {
     navigator.geolocation.getCurrentPosition(function(position) {
       var lat = position.coords.latitude;
       var lon = position.coords.longitude;
-      $("#getResult").on("click", function(){
-        $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&appid=f8eca089b2dc20d458b0079a2d2dcd13', function(json) {
-          $(".result").html(JSON.stringify(json));
-        }); 
-      });
+      $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=f8eca089b2dc20d458b0079a2d2dcd13', function(json) {
+        
+        $(".city").html('<h1>' + json['name'] + '</h1>');  
+        $(".result").html(JSON.stringify(json));
+      }); 
     });
   } 
 
