@@ -8,6 +8,7 @@ $(document).ready(function() {
         
         $(".city").html('<h1>' + json['name'] + '</h1>');  
         $(".temperature").html('<h2>' + Math.floor(json['main'].temp) + '&deg <span id="temp-conversion">F</span></h2>');
+        $(".description").html('<h2>' + json['weather'][0].description + '</h2>');
         console.log(json['main'].temp);
         $(".result").html(JSON.stringify(json));
       }); 
