@@ -18,7 +18,9 @@ $(document).ready(function() {
       $(".temperature").html('<h2>' + Math.floor(jzon['main'].temp) + '&deg <span id="temp-conversion">F</span></h2>');
       $(".description").html('<h2>' + jzon['weather'][0].description.toUpperCase() + '</h2>');
       $(".humidity").html('<h2>HUMIDITY ' + jzon['main'].humidity + '%</h2>');
-      $(".windspeed").html('<h2>WIND ' + Math.floor(jzon['wind'].speed) + 'MPH ' + degreesToDirection(jzon['wind'].deg) + '</h2');
+      var card = degreesToDirection(jzon['wind'].deg).toLowerCase();
+      $(".windspeed").html('<h2>WIND ' + Math.floor(jzon['wind'].speed) + 'MPH ' + degreesToDirection(jzon['wind'].deg) + '<span id="w-di"><i class="wi wi-wind wi-from-' + card + '"></i></span></h2>');
+      $(".city").append('<h2><i id="w-icon" class="wi wi-owm-' + jzon['weather'][0].id + '"></i></h2>');
     });
   } 
 
