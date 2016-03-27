@@ -12,11 +12,13 @@ $(document).ready(function() {
         console.log(json['main'].temp);
         $(".result").html(JSON.stringify(json));
       });*/ 
+      // ALL OF THE BELOW WILL NEED TO GO INTO THE API CALL ABOVE WHEN DONE
       var jzon = {"coord":{"lon":-90.58,"lat":41.52},"weather":[{"id":701,"main":"Mist","description":"mist","icon":"50d"}],"base":"cmc stations","main":{"temp":40.96,"pressure":1015,"humidity":81,"temp_min":39.2,"temp_max":42.8},"wind":{"speed":12.75,"deg":280,"gust":9.8},"clouds":{"all":90},"dt":1459083660,"sys":{"type":1,"id":991,"message":0.0043,"country":"US","sunrise":1459079514,"sunset":1459124602},"id":4853423,"name":"Davenport","cod":200}
       $(".city").html('<h1>' + jzon['name'].toUpperCase() + '</h1>');  
       $(".temperature").html('<h2>' + Math.floor(jzon['main'].temp) + '&deg <span id="temp-conversion">F</span></h2>');
       $(".description").html('<h2>' + jzon['weather'][0].description.toUpperCase() + '</h2>');
       $(".humidity").html('<h2>HUMIDITY ' + jzon['main'].humidity + '%</h2>');
+      $(".windspeed").html('<h2>WIND ' + Math.floor(jzon['wind'].speed) + 'MPH ' + degreesToDirection(jzon['wind'].deg) + '</h2');
     });
   } 
 
@@ -26,3 +28,13 @@ $(document).ready(function() {
     }); 
   });
 });
+
+/* function from stackoverflow
+ http://stackoverflow.com/questions/7490660/converting-wind-direction-in-angles-to-text-words*/
+function degreesToDirection(degrees)
+{
+  var val = Math.floor((degrees / 22.5) + 0.5);
+  var arr = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
+             "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+  return arr[(val % 16)];
+} 
