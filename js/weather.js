@@ -21,8 +21,22 @@ $(document).ready(function() {
       var card = degreesToDirection(jzon['wind'].deg).toLowerCase();
       $(".windspeed").html('<h2>WIND ' + Math.floor(jzon['wind'].speed) + 'MPH ' + degreesToDirection(jzon['wind'].deg) + ' <i class="wi wi-wind wi-from-' + card + '"></i></h2>');
       $(".city").append('<h2><i id="w-icon" class="wi wi-owm-' + jzon['weather'][0].id + '"></i></h2>');
+
+      // this determines the size of photo to get from flickr
+      // and also the orientation that we need eg. landscape vs portrait
+      var intVPWidth = window.innerWidth;
+      var intVPHeight = window.innerHeight;
+      // this weather icon variable will determine the photo search values
+      var owIconID = jzon['weather'][0].icon; 
+
+      // uses viewport width and height to determine portrait
+      // or landscape. open weather icon id will determine what
+      // keywords to search flickr for. returns photo url for background
+      displayWeatherPhoto(intVPWidth, intVPHeight, owIconID);
     });
+
   } 
+
 
   $("#getFlickrResult").on("click", function(){
     $.getJSON('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=7489f6e27e5cfc416ebe333a830abc1e&tags=one%2C+cloud&content_type=1&media=photos&per_page=50&page=1&format=json&nojsoncallback=1_h', function(json) {
@@ -40,3 +54,80 @@ function degreesToDirection(degrees)
              "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
   return arr[(val % 16)];
 } 
+
+// adds to the DOM appropriate photo background
+// also attributes flickr user on the page
+function displayWeatherPhoto(intVPWidth, intVPHeight, owIconID)
+{
+    var flickrAPI = 'https://api.flickr.com/services/rest/'; 
+    
+    var tagString = owIconIdSwitch(owIconID);
+
+    $.getJSON(flickrAPI, {
+      "method"        :"flickr.photos.search",
+      "api_key"       :"7489f6e27e5cfc416ebe333a830abc1e",
+      "tags"          : tagString,
+      "extras"        :"o_dims,url_l,url_m",
+      "content_type"  :"1",
+      "media"         :"photos",
+      "per_page"      :"50",
+      "page"          :"1",
+      "format"        :"json",
+      "nojsoncallback":"1"}, function(json) {
+    
+    }); 
+}
+
+// uses a switch to build a tags string loosely
+// based off of OpenWeather Icon descriptors
+function owIconIdSwitch(owIconID)
+{
+  var tagString;
+  switch (owIconID)
+  {
+    case "01d":
+      tagString = 'clear,sunny,sky'; 
+      break;
+    case "01n":
+      tagString = 'starry,night';  
+      break;
+    case "02d":
+    case "03d":
+    case "04d":
+      tagString = 'cloudy,sky,clouds';
+      break;
+    case "02n":
+    case "03n":
+    case "04n":
+      tagString = 'nighttime,night,clouds,cloudy';
+      break;
+    case "09d":
+    case "10d":
+      tagString = 'rainy,day,showers,rain';
+      break;
+    case "09n":
+    case "10n":
+      tagString = 'rainy,night,nightime,rain';
+      break;
+    case "13d":
+    case "13n":
+      tagString = 'snow,snowy,snowing';
+      break;
+    case "50d":
+    case "50n":
+      tagString = 'mist,fog,foggy,misty';
+      break;
+    default:
+      tagString = 'skyline, sky'; 
+      break;
+  } 
+
+  return tagString;
+}
+
+// grabs a random value given a minimum
+// and a maximum
+function getRandomIntInclusive(min, max) 
+{
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
