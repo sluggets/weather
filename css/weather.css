@@ -1,3 +1,16 @@
+body
+{
+  background: url("https://farm2.staticflickr.com/1719/26037090331_9ba3628f6c_b.jpg");
+  background-size: cover;
+}
+
+.container-fluid
+{
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 100vw;
+  height: 100vh;
+  color: white;
+}
 
 #w-icon
 {
