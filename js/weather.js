@@ -107,7 +107,24 @@ function displayWeatherPhoto(intVPWidth, intVPHeight, owIconID)
         var ranNum = getRandomIntInclusive(0, filteredSet.length - 1)
         var flickrObj = filteredSet[ranNum];
         var licenseNum = flickrObj["license"];
+        
+        if (flickrObj['url_l'])
+        {
+          var imgUrl = "url(" + flickrObj['url_l'] + ")";
+        }
+        else if (flickrObj['url_m'])
+        {
+          var imgUrl = "url(" + flickrObj['url_m'] + ")";
+          console.log(flickrObj['url_m']);
+        }
+        else
+        {
+          var imgUrl = "url(https://pixabay.com/static/uploads/photo/2016/01/05/12/15/sky-1122414_960_720.jpg)"; 
+        }
+        
+        $("body").css("background-image", imgUrl);
 
+        //TODOvar flickrUsr =  
         appendLicense(licenseNum);
       });       
 }
@@ -195,9 +212,7 @@ function appendLicense(licenseNum)
       {
         return obj.id == licenseNum; 
       });
-      /*console.log(licenseNum);
-      console.log(filteredLicense[0]);*/
-      $(".license").html('<h2><a href="' + filteredLicense[0]['url'] + '">' + filteredLicense[0]['name'] + '</a></h2>');
+      $(".att-license").append('<a href="' + filteredLicense[0]['url'] + '">' + filteredLicense[0]['name'] + '</a>');
     
   });
   
