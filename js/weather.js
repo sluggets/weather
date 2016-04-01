@@ -40,7 +40,8 @@ $(document).ready(function() {
 
   $("#getFlickrResult").on("click", function(){
     $.getJSON('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=7489f6e27e5cfc416ebe333a830abc1e&tags=one%2C+cloud&content_type=1&media=photos&per_page=50&page=1&format=json&nojsoncallback=1_h', function(json) {
-      $(".f-result").html(JSON.stringify(json));
+      //$(".f-result").html(JSON.stringify(json));
+      console.log(json['photos']['photo']);
     }); 
   });
 });
@@ -59,6 +60,15 @@ function degreesToDirection(degrees)
 // also attributes flickr user on the page
 function displayWeatherPhoto(intVPWidth, intVPHeight, owIconID)
 {
+    if (intVPWidth < intVPHeight)
+    {
+      var orientation = "portrait";
+    }
+    else    
+    {
+      var orientation = "landscape";
+    }
+
     var flickrAPI = 'https://api.flickr.com/services/rest/'; 
     
     var tagString = owIconIdSwitch(owIconID);
@@ -67,15 +77,39 @@ function displayWeatherPhoto(intVPWidth, intVPHeight, owIconID)
       "method"        :"flickr.photos.search",
       "api_key"       :"7489f6e27e5cfc416ebe333a830abc1e",
       "tags"          : tagString,
-      "extras"        :"o_dims,url_l,url_m",
+      "license"       :"1,2,3,4,5,6,7,8",
+      "extras"        :"o_dims,url_l,url_m,license",
       "content_type"  :"1",
       "media"         :"photos",
       "per_page"      :"50",
       "page"          :"1",
       "format"        :"json",
       "nojsoncallback":"1"}, function(json) {
-    
-    }); 
+      //var photoArr = json['photos']['photo'];
+      var arrLength =  json['photos']['photo'].length;   
+      var filteredSet = json['photos']['photo'].filter(function(obj) {
+            if (orientation == 'landscape')
+            {
+              if (obj.url_l || obj.url_m)
+              {
+                return (obj.o_width > obj.o_height)
+              }
+            }
+            else
+            {
+              if (obj.url_l || obj.url_m)
+              {
+                return (obj.o_width < obj.o_height)
+              }
+            }
+
+        });
+        var ranNum = getRandomIntInclusive(0, filteredSet.length - 1)
+        var flickrObj = filteredSet[ranNum];
+        var licenseNum = flickrObj["license"];
+
+        appendLicense(licenseNum);
+      });       
 }
 
 // uses a switch to build a tags string loosely
@@ -130,4 +164,41 @@ function owIconIdSwitch(owIconID)
 function getRandomIntInclusive(min, max) 
 {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// appends license info to page
+function appendLicense(licenseNum)
+{
+  /*var pre = '<h2><a href="'; 
+  var mid = '">';
+  var post = '</a></h2'
+  switch (licenseNum)
+  {
+    case "1":
+      var url = 'http://creativecommons.org/licenses/by-nc-sa/2.0/';
+      var license = 'Attribution-NonCommercial-ShareAlike License';
+      break;
+    case "2":
+      var url = 'http://creativecommons.org/licenses/by-nc/2.0/';
+      var license = 'Attribution-NonCommercial License';
+    case "3":
+      var url = 'http://creativecommons.org/licenses/by-nc-nd/2.0/';
+  }*/
+  var flickrAPI = 'https://api.flickr.com/services/rest/'; 
+
+  $.getJSON(flickrAPI, {
+    "method"        :"flickr.photos.licenses.getInfo",
+    "api_key"       :"7489f6e27e5cfc416ebe333a830abc1e",
+    "format"        :"json",
+    "nojsoncallback":"1"}, function(json) {
+      var filteredLicense = json['licenses']['license'].filter(function(obj) 
+      {
+        return obj.id == licenseNum; 
+      });
+      /*console.log(licenseNum);
+      console.log(filteredLicense[0]);*/
+      $(".license").html('<h2><a href="' + filteredLicense[0]['url'] + '">' + filteredLicense[0]['name'] + '</a></h2>');
+    
+  });
+  
 }
