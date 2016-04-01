@@ -16,3 +16,8 @@ body
 {
   font-size: 3em; 
 }
+
+.att-license, a, a:visited, a:focus
+{
+  color: white
+}
