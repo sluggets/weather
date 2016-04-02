@@ -124,7 +124,9 @@ function displayWeatherPhoto(intVPWidth, intVPHeight, owIconID)
         
         $("body").css("background-image", imgUrl);
 
-        //TODOvar flickrUsr =  
+        flickrUsr = flickrObj['owner'];  
+        console.log(flickrUsr);
+        appendAttribution(flickrUsr);
         appendLicense(licenseNum);
       });       
 }
@@ -197,8 +199,26 @@ function appendLicense(licenseNum)
       {
         return obj.id == licenseNum; 
       });
-      $(".att-license").append('<a href="' + filteredLicense[0]['url'] + '">' + filteredLicense[0]['name'] + '</a>');
+      $(".att-license").append('<p><a href="' + filteredLicense[0]['url'] + '">' + filteredLicense[0]['name'] + '</a><p>');
     
   });
   
+}
+
+// appends flickr user credit to page
+function appendAttribution(flickrUsr)
+{
+  var flickrAPI = 'https://api.flickr.com/services/rest/'; 
+
+  $.getJSON(flickrAPI, {
+    "method"        :"flickr.people.getInfo",
+    "user_id"            : flickrUsr,
+    "api_key"       :"7489f6e27e5cfc416ebe333a830abc1e",
+    "format"        :"json",
+    "nojsoncallback":"1"}, function(json) {
+      $(".att-license").append('<p>Photo by: <a href="' + json['person']['profileurl']['_content'] + '">' + json['person']['username']['_content'] + '</a></p>');
+    console.log(json);
+    
+  });
+
 }
