@@ -186,21 +186,6 @@ function getRandomIntInclusive(min, max)
 // appends license info to page
 function appendLicense(licenseNum)
 {
-  /*var pre = '<h2><a href="'; 
-  var mid = '">';
-  var post = '</a></h2'
-  switch (licenseNum)
-  {
-    case "1":
-      var url = 'http://creativecommons.org/licenses/by-nc-sa/2.0/';
-      var license = 'Attribution-NonCommercial-ShareAlike License';
-      break;
-    case "2":
-      var url = 'http://creativecommons.org/licenses/by-nc/2.0/';
-      var license = 'Attribution-NonCommercial License';
-    case "3":
-      var url = 'http://creativecommons.org/licenses/by-nc-nd/2.0/';
-  }*/
   var flickrAPI = 'https://api.flickr.com/services/rest/'; 
 
   $.getJSON(flickrAPI, {
