@@ -1,16 +1,21 @@
 $(document).ready(function() {
+  // if geolocation is accepted by user/availabe, use it!
   if (navigator.geolocation)
   {
+    // passes geo coordinates to OpenWeather API
     navigator.geolocation.getCurrentPosition(function(position) {
       var lat = position.coords.latitude;
       var lon = position.coords.longitude;
       $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=f8eca089b2dc20d458b0079a2d2dcd13', function(json) {
-        
+        // puts weather data into DOM 
         $(".city").html('<h1>' + json['name'].toUpperCase() + '</h1>');  
         $(".temperature").html('<h2>' + Math.floor(json['main'].temp) + '&deg <span id="temp-conversion">F</span></h2>');
         $(".description").html('<h2>' + json['weather'][0].description.toUpperCase() + '</h2>');
         $(".humidity").html('<h2>HUMIDITY ' + json['main'].humidity + '%</h2>');
+        // stores weather direction into var
         var card = degreesToDirection(json['wind'].deg).toLowerCase();
+
+        // puts windspeed into DOM, uses Wind Icon for direction
         $(".windspeed").html('<h2>WIND ' + Math.floor(json['wind'].speed) + 'MPH ' + degreesToDirection(json['wind'].deg) + ' <i class="wi wi-wind wi-from-' + card + '"></i></h2>');
         $(".city").append('<h2><i id="w-icon" class="wi wi-owm-' + json['weather'][0].id + '"></i></h2>');
 
@@ -18,12 +23,15 @@ $(document).ready(function() {
         // and also the orientation that we need eg. landscape vs portrait
         var intVPWidth = window.innerWidth;
         var intVPHeight = window.innerHeight;
-        // this weather icon variable will determine the photo search values
+
+        // weather icon variable used for flickr photo search keywords
         var owIconID = json['weather'][0].icon; 
 
         // uses viewport width and height to determine portrait
         // or landscape. open weather icon id will determine what
-        // keywords to search flickr for. returns photo url for background
+        // keywords to search flickr for. 
+        // builds appropriate weather photo into DOM
+        // puts photo attribution and license infor into DOM
         displayWeatherPhoto(intVPWidth, intVPHeight, owIconID);
       }); 
     });
@@ -34,6 +42,7 @@ $(document).ready(function() {
 
 /* function from stackoverflow
  http://stackoverflow.com/questions/7490660/converting-wind-direction-in-angles-to-text-words*/
+// translates wind degrees into alpha direction abbreviation
 function degreesToDirection(degrees)
 {
   var val = Math.floor((degrees / 22.5) + 0.5);
@@ -57,6 +66,8 @@ function displayWeatherPhoto(intVPWidth, intVPHeight, owIconID)
 
     var flickrAPI = 'https://api.flickr.com/services/rest/'; 
     
+    // search string of keywords based on weather
+    // to be sent to flickr API
     var tagString = owIconIdSwitch(owIconID);
 
     $.getJSON(flickrAPI, {
@@ -73,6 +84,9 @@ function displayWeatherPhoto(intVPWidth, intVPHeight, owIconID)
       "nojsoncallback":"1"}, function(json) {
       var arrLength =  json['photos']['photo'].length;   
       var filteredSet = json['photos']['photo'].filter(function(obj) {
+            // whether landscape or portrait
+            // uses large version of photo first
+            // then medium size if large not available
             if (orientation == 'landscape')
             {
               if (obj.url_l || obj.url_m)
@@ -104,6 +118,7 @@ function displayWeatherPhoto(intVPWidth, intVPHeight, owIconID)
         }
         else
         {
+          // default photo, need to replace with my own photo
           var imgUrl = "url(https://pixabay.com/static/uploads/photo/2016/01/05/12/15/sky-1122414_960_720.jpg)"; 
         }
         
