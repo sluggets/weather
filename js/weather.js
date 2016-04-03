@@ -25,33 +25,7 @@ $(document).ready(function() {
         // or landscape. open weather icon id will determine what
         // keywords to search flickr for. returns photo url for background
         displayWeatherPhoto(intVPWidth, intVPHeight, owIconID);
-        /*$(".city").html('<h1>' + json['name'] + '</h1>');  
-        $(".temperature").html('<h2>' + Math.floor(json['main'].temp) + '&deg <span id="temp-conversion">F</span></h2>');
-        $(".description").html('<h2>' + json['weather'][0].description + '</h2>');
-        console.log(json['main'].temp);
-        $(".result").html(JSON.stringify(json));*/
       }); 
-      // ALL OF THE BELOW WILL NEED TO GO INTO THE API CALL ABOVE WHEN DONE
-      /*var jzon = {"coord":{"lon":-90.58,"lat":41.52},"weather":[{"id":701,"main":"Mist","description":"mist","icon":"50d"}],"base":"cmc stations","main":{"temp":40.96,"pressure":1015,"humidity":81,"temp_min":39.2,"temp_max":42.8},"wind":{"speed":12.75,"deg":280,"gust":9.8},"clouds":{"all":90},"dt":1459083660,"sys":{"type":1,"id":991,"message":0.0043,"country":"US","sunrise":1459079514,"sunset":1459124602},"id":4853423,"name":"Davenport","cod":200}
-      $(".city").html('<h1>' + jzon['name'].toUpperCase() + '</h1>');  
-      $(".temperature").html('<h2>' + Math.floor(jzon['main'].temp) + '&deg <span id="temp-conversion">F</span></h2>');
-      $(".description").html('<h2>' + jzon['weather'][0].description.toUpperCase() + '</h2>');
-      $(".humidity").html('<h2>HUMIDITY ' + jzon['main'].humidity + '%</h2>');
-      var card = degreesToDirection(jzon['wind'].deg).toLowerCase();
-      $(".windspeed").html('<h2>WIND ' + Math.floor(jzon['wind'].speed) + 'MPH ' + degreesToDirection(jzon['wind'].deg) + ' <i class="wi wi-wind wi-from-' + card + '"></i></h2>');
-      $(".city").append('<h2><i id="w-icon" class="wi wi-owm-' + jzon['weather'][0].id + '"></i></h2>');
-
-      // this determines the size of photo to get from flickr
-      // and also the orientation that we need eg. landscape vs portrait
-      var intVPWidth = window.innerWidth;
-      var intVPHeight = window.innerHeight;
-      // this weather icon variable will determine the photo search values
-      var owIconID = jzon['weather'][0].icon; 
-
-      // uses viewport width and height to determine portrait
-      // or landscape. open weather icon id will determine what
-      // keywords to search flickr for. returns photo url for background
-      displayWeatherPhoto(intVPWidth, intVPHeight, owIconID);*/
     });
 
   } 
@@ -97,7 +71,6 @@ function displayWeatherPhoto(intVPWidth, intVPHeight, owIconID)
       "page"          :"1",
       "format"        :"json",
       "nojsoncallback":"1"}, function(json) {
-      //var photoArr = json['photos']['photo'];
       var arrLength =  json['photos']['photo'].length;   
       var filteredSet = json['photos']['photo'].filter(function(obj) {
             if (orientation == 'landscape')
