@@ -4,16 +4,35 @@ $(document).ready(function() {
     navigator.geolocation.getCurrentPosition(function(position) {
       var lat = position.coords.latitude;
       var lon = position.coords.longitude;
-      /*$.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=f8eca089b2dc20d458b0079a2d2dcd13', function(json) {
+      $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=f8eca089b2dc20d458b0079a2d2dcd13', function(json) {
         
-        $(".city").html('<h1>' + json['name'] + '</h1>');  
+        $(".city").html('<h1>' + json['name'].toUpperCase() + '</h1>');  
+        $(".temperature").html('<h2>' + Math.floor(json['main'].temp) + '&deg <span id="temp-conversion">F</span></h2>');
+        $(".description").html('<h2>' + json['weather'][0].description.toUpperCase() + '</h2>');
+        $(".humidity").html('<h2>HUMIDITY ' + json['main'].humidity + '%</h2>');
+        var card = degreesToDirection(json['wind'].deg).toLowerCase();
+        $(".windspeed").html('<h2>WIND ' + Math.floor(json['wind'].speed) + 'MPH ' + degreesToDirection(json['wind'].deg) + ' <i class="wi wi-wind wi-from-' + card + '"></i></h2>');
+        $(".city").append('<h2><i id="w-icon" class="wi wi-owm-' + json['weather'][0].id + '"></i></h2>');
+
+        // this determines the size of photo to get from flickr
+        // and also the orientation that we need eg. landscape vs portrait
+        var intVPWidth = window.innerWidth;
+        var intVPHeight = window.innerHeight;
+        // this weather icon variable will determine the photo search values
+        var owIconID = json['weather'][0].icon; 
+
+        // uses viewport width and height to determine portrait
+        // or landscape. open weather icon id will determine what
+        // keywords to search flickr for. returns photo url for background
+        displayWeatherPhoto(intVPWidth, intVPHeight, owIconID);
+        /*$(".city").html('<h1>' + json['name'] + '</h1>');  
         $(".temperature").html('<h2>' + Math.floor(json['main'].temp) + '&deg <span id="temp-conversion">F</span></h2>');
         $(".description").html('<h2>' + json['weather'][0].description + '</h2>');
         console.log(json['main'].temp);
-        $(".result").html(JSON.stringify(json));
-      });*/ 
+        $(".result").html(JSON.stringify(json));*/
+      }); 
       // ALL OF THE BELOW WILL NEED TO GO INTO THE API CALL ABOVE WHEN DONE
-      var jzon = {"coord":{"lon":-90.58,"lat":41.52},"weather":[{"id":701,"main":"Mist","description":"mist","icon":"50d"}],"base":"cmc stations","main":{"temp":40.96,"pressure":1015,"humidity":81,"temp_min":39.2,"temp_max":42.8},"wind":{"speed":12.75,"deg":280,"gust":9.8},"clouds":{"all":90},"dt":1459083660,"sys":{"type":1,"id":991,"message":0.0043,"country":"US","sunrise":1459079514,"sunset":1459124602},"id":4853423,"name":"Davenport","cod":200}
+      /*var jzon = {"coord":{"lon":-90.58,"lat":41.52},"weather":[{"id":701,"main":"Mist","description":"mist","icon":"50d"}],"base":"cmc stations","main":{"temp":40.96,"pressure":1015,"humidity":81,"temp_min":39.2,"temp_max":42.8},"wind":{"speed":12.75,"deg":280,"gust":9.8},"clouds":{"all":90},"dt":1459083660,"sys":{"type":1,"id":991,"message":0.0043,"country":"US","sunrise":1459079514,"sunset":1459124602},"id":4853423,"name":"Davenport","cod":200}
       $(".city").html('<h1>' + jzon['name'].toUpperCase() + '</h1>');  
       $(".temperature").html('<h2>' + Math.floor(jzon['main'].temp) + '&deg <span id="temp-conversion">F</span></h2>');
       $(".description").html('<h2>' + jzon['weather'][0].description.toUpperCase() + '</h2>');
@@ -32,18 +51,11 @@ $(document).ready(function() {
       // uses viewport width and height to determine portrait
       // or landscape. open weather icon id will determine what
       // keywords to search flickr for. returns photo url for background
-      displayWeatherPhoto(intVPWidth, intVPHeight, owIconID);
+      displayWeatherPhoto(intVPWidth, intVPHeight, owIconID);*/
     });
 
   } 
 
-
-  $("#getFlickrResult").on("click", function(){
-    $.getJSON('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=7489f6e27e5cfc416ebe333a830abc1e&tags=one%2C+cloud&content_type=1&media=photos&per_page=50&page=1&format=json&nojsoncallback=1_h', function(json) {
-      //$(".f-result").html(JSON.stringify(json));
-      console.log(json['photos']['photo']);
-    }); 
-  });
 });
 
 /* function from stackoverflow
@@ -199,7 +211,7 @@ function appendLicense(licenseNum)
       {
         return obj.id == licenseNum; 
       });
-      $(".att-license").append('<p><a href="' + filteredLicense[0]['url'] + '">' + filteredLicense[0]['name'] + '</a><p>');
+      $(".att-license").append('<p>Photo License: <a href="' + filteredLicense[0]['url'] + '">' + filteredLicense[0]['name'] + '</a><p>');
     
   });
   
@@ -216,8 +228,7 @@ function appendAttribution(flickrUsr)
     "api_key"       :"7489f6e27e5cfc416ebe333a830abc1e",
     "format"        :"json",
     "nojsoncallback":"1"}, function(json) {
-      $(".att-license").append('<p>Photo by: <a href="' + json['person']['profileurl']['_content'] + '">' + json['person']['username']['_content'] + '</a></p>');
-    console.log(json);
+      $(".att-license").append('<p>Photo by Flickr user <a href="' + json['person']['profileurl']['_content'] + '">' + json['person']['username']['_content'] + '</a></p>');
     
   });
 
