@@ -9,7 +9,7 @@ $(document).ready(function() {
       $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=f8eca089b2dc20d458b0079a2d2dcd13', function(json) {
         // puts weather data into DOM 
         $(".city").html('<h1>' + json['name'].toUpperCase() + '</h1>');  
-        $(".temperature").html('<h2 id="temp">' + Math.floor(json['main'].temp) + '&deg <span id="temp-conversion">F</span></h2>');
+        $(".temperature").html('<h2><span id="temp">' + Math.floor(json['main'].temp) + '</span>&deg <span id="temp-conversion">F</span></h2>');
         $(".description").html('<h2>' + json['weather'][0].description.toUpperCase() + '</h2>');
         $(".humidity").html('<h2>HUMIDITY ' + json['main'].humidity + '%</h2>');
         // stores weather direction into var
@@ -43,7 +43,7 @@ $(document).ready(function() {
   });*/
   $(document).on('click', '#temp-conversion', function() {
     var fTemp =  document.getElementById("temp").textContent;
-    console.log(fTemp.slice(0, -3));
+    console.log(fTemp);
   });
 });
 
