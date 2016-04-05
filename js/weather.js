@@ -208,7 +208,7 @@ function appendLicense(licenseNum)
       {
         return obj.id == licenseNum; 
       });
-      $(".att-license").append('<p>Photo License: <a href="' + filteredLicense[0]['url'] + '">' + filteredLicense[0]['name'] + '</a><p>');
+      $("#att").append('Photo License: <a href="' + filteredLicense[0]['url'] + '">' + filteredLicense[0]['name'] + '</a> - ');
     
   });
   
@@ -225,7 +225,7 @@ function appendAttribution(flickrUsr)
     "api_key"       :"7489f6e27e5cfc416ebe333a830abc1e",
     "format"        :"json",
     "nojsoncallback":"1"}, function(json) {
-      $(".att-license").append('<p>Photo by Flickr user <a href="' + json['person']['profileurl']['_content'] + '">' + json['person']['username']['_content'] + '</a></p>');
+      $("#att").append('Photo by Flickr user <a href="' + json['person']['profileurl']['_content'] + '">' +  json['person']['username']['_content'] + '</a>');
     
   });
 
