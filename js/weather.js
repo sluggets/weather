@@ -42,8 +42,11 @@ $(document).ready(function() {
     console.log(toConvert);
   });*/
   $(document).on('click', '#temp-conversion', function() {
-    var fTemp =  document.getElementById("temp").textContent;
-    console.log(fTemp);
+    var currentTemp =  document.getElementById("temp").textContent;
+    var tempType = document.getElementById("temp-conversion").textContent;
+
+    fahrToCel(tempType, currentTemp);
+    //console.log(fTemp, tempType);
   });
 });
 
@@ -227,3 +230,23 @@ function appendAttribution(flickrUsr)
   });
 
 }
+
+// converts Fahrenheit to Celsius and vice versa
+// puts conversion into DOM
+function fahrToCel(tempType, currentTemp)
+{
+  var intTemp = parseInt(currentTemp);
+  if (tempType == 'F')
+  {
+    var newTemp = Math.round((intTemp - 32) * 5 / 9); 
+    tempType = 'C';
+  }
+  else
+  {
+    var newTemp = Math.round(((intTemp * 9) / 5) + 32); 
+    tempType = 'F';
+  }
+
+  document.getElementById("temp").textContent = newTemp;
+  document.getElementById("temp-conversion").textContent = tempType;
+} 
