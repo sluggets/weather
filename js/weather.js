@@ -208,7 +208,7 @@ function appendLicense(licenseNum)
       {
         return obj.id == licenseNum; 
       });
-      $("#att").append('Photo License: <a href="' + filteredLicense[0]['url'] + '">' + filteredLicense[0]['name'] + '</a> - ');
+      $("#lic").append('Photo License: <a href="' + filteredLicense[0]['url'] + '">' + filteredLicense[0]['name'] + '</a> - ');
     
   });
   
