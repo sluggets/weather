@@ -38,3 +38,29 @@ body
 {
   font-size: 5em;
 }
+
+#timpic
+{
+  display: none;
+  border-radius: 30px;
+}
+
+#about
+{
+  display: none; 
+}
+
+#projects
+{
+  display: none;
+}
+
+.fa-external-link
+{
+  margin-left: 3px;
+}
+
+.foot-pro
+{
+  font-size: 1.5em;
+}
