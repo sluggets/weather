@@ -165,7 +165,7 @@ function owIconIdSwitch(owIconID)
       break;
     case "09d":
     case "10d":
-      tagString = 'rainy,day,showers,rain';
+      tagString = 'rainy,showers,rain';
       break;
     case "09n":
     case "10n":
