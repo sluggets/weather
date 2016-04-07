@@ -61,6 +61,8 @@ $(document).ready(function() {
   $('#ti').click(function(){
     $('#timpic').toggle(600);
   });
+
+  $('.footer').css('text-shadow', '0px 0px 19px black');
   
 });
 
