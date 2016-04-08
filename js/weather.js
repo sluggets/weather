@@ -1,9 +1,11 @@
 $(document).ready(function() {
+  $(".zip-entry").css("display", "block");
   // if geolocation is accepted by user/availabe, use it!
   if (navigator.geolocation)
   {
     // passes geo coordinates to OpenWeather API
     navigator.geolocation.getCurrentPosition(function(position) {
+      $(".zip-entry").css("display", "none");
       var lat = position.coords.latitude;
       var lon = position.coords.longitude;
       $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=f8eca089b2dc20d458b0079a2d2dcd13', function(json) {
@@ -37,6 +39,10 @@ $(document).ready(function() {
     });
 
   } 
+  else
+  {
+    $(".zip-entry").css("display", "block");
+  }
   /*$('#temp-conversion').click(function() {
     var toConvert =  document.getElementById("temp");
     console.log(toConvert);
