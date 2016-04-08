@@ -18,6 +18,17 @@
   <body>
     <div class="container-fluid">
       <div class="row text-center">
+        <div class="col-xs-6 zip-entry text-center">
+          <label for="zipcode">Zip Code</label>
+          <input type="number" 
+                 class="form-control form-control-lg text-center"
+                 id="zipcode"
+                 placeholder="Enter 5-Digit U.S Zip Code"
+                 autocomplete="postal-code"
+                 pattern="^\d{5}$" required>
+        </div>
+      </div>
+      <div class="row text-center">
         <div class="col-xs-12 city">
         </div>
       </div>
