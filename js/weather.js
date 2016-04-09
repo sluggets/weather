@@ -93,6 +93,12 @@ function displayWeather()
       $(".city").html('<h1>Sorry, technical error try again another time!</h1>'); 
     }
 
+     // just a test to see if API begins returning
+     // wind direction again
+     for (var prop in json["wind"])
+     {
+       console.log("obj." + prop + " = " + json['wind'][prop]);
+     }
     // puts weather data into DOM 
     $(".city").html('<h1>' + json['name'].toUpperCase() + '</h1>');  
     $(".temperature").html('<h2><span id="temp">' + Math.floor(json['main'].temp) + '</span>&deg <span id="temp-conversion">F</span></h2>');
