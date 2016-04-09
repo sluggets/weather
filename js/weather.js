@@ -54,9 +54,7 @@ $(document).ready(function() {
       document.getElementById("zipLabel").textContent = "THANK YOU!";
       displayWeather(zipVal);
     }
-    
-        
-    console.log(zipVal + typeof zipVal + zipVal.length);
+
   });  
 
   $('.footer').css('text-shadow', '0px 0px 8px black');
@@ -101,10 +99,20 @@ function displayWeather()
     $(".description").html('<h2>' + json['weather'][0].description.toUpperCase() + '</h2>');
     $(".humidity").html('<h2>HUMIDITY ' + json['main'].humidity + '%</h2>');
     // stores weather direction into var
-    var card = degreesToDirection(json['wind'].deg).toLowerCase();
-
+    if (json['wind'].deg)
+    {
+      var deg = json['wind'].deg;
+      console.log("inside real");
+    }
+    else
+    {
+      var deg = 283;
+      console.log("inside fake");
+    }
+    
+    var card = degreesToDirection(deg).toLowerCase();
     // puts windspeed into DOM, uses Wind Icon for direction
-    $(".windspeed").html('<h2>WIND ' + Math.floor(json['wind'].speed) + 'MPH ' + degreesToDirection(json['wind'].deg) + ' <i class="wi wi-wind wi-from-' + card + '"></i></h2>');
+    $(".windspeed").html('<h2>WIND ' + Math.floor(json['wind'].speed) + 'MPH ' + degreesToDirection(deg) + ' <i class="wi wi-wind wi-from-' + card + '"></i></h2>');
     $(".city").append('<h2><i id="w-icon" class="wi wi-owm-' + json['weather'][0].id + '"></i></h2>');
 
     // this determines the size of photo to get from flickr
@@ -199,12 +207,11 @@ function displayWeatherPhoto(intVPWidth, intVPHeight, owIconID)
         else if (flickrObj['url_m'])
         {
           var imgUrl = "url(" + flickrObj['url_m'] + ")";
-          console.log(flickrObj['url_m']);
         }
         else
         {
-          // default photo, need to replace with my own photo
-          var imgUrl = "url(https://pixabay.com/static/uploads/photo/2016/01/05/12/15/sky-1122414_960_720.jpg)"; 
+          // default photo
+          var imgUrl = "url(../img/landsky2.jpg)"; 
         }
         
         $("body").css("background-image", imgUrl);
