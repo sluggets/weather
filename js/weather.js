@@ -52,6 +52,7 @@ $(document).ready(function() {
     else
     {
       document.getElementById("zipLabel").textContent = "THANK YOU!";
+      //displayZipWeather(zipVal);
     }
     
         
@@ -66,6 +67,12 @@ $(document).ready(function() {
 function displayGeoWeather(lat, lon)
 {
       $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=f8eca089b2dc20d458b0079a2d2dcd13', function(json) {
+        // handle api error
+        if (json['cod'] !== 200)
+        {
+          $(".city").html('<h1>Sorry, technical error try again another time!</h1>'); 
+        }
+
         // puts weather data into DOM 
         $(".city").html('<h1>' + json['name'].toUpperCase() + '</h1>');  
         $(".temperature").html('<h2><span id="temp">' + Math.floor(json['main'].temp) + '</span>&deg <span id="temp-conversion">F</span></h2>');
