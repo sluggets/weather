@@ -12,7 +12,7 @@ $(document).ready(function() {
       $(".zip-entry").css("display", "none");
       var lat = position.coords.latitude;
       var lon = position.coords.longitude;
-      displayGeoWeather(lat, lon);
+      displayWeather(lat, lon);
     });
 
   } 
@@ -52,7 +52,7 @@ $(document).ready(function() {
     else
     {
       document.getElementById("zipLabel").textContent = "THANK YOU!";
-      //displayZipWeather(zipVal);
+      displayWeather(zipVal);
     }
     
         
@@ -63,49 +63,65 @@ $(document).ready(function() {
   
 });
 
-// displays weather called with geolocation
-function displayGeoWeather(lat, lon)
+// displays weather called with geolocation or zip code
+function displayWeather()
 {
-      $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=f8eca089b2dc20d458b0079a2d2dcd13', function(json) {
-        // handle api error
-        if (json['cod'] !== 200)
-        {
-          $(".city").html('<h1>Sorry, technical error try again another time!</h1>'); 
-        }
+  $(".zip-entry").css("display", "none");
+  var openWeatherApi = 'http://api.openweathermap.org/data/2.5/weather';
+  
+  if (arguments.length === 2)
+  {
+    var lat = arguments[0];
+    var lon = arguments[1];
+    var apiParams = {
+      "lat":        lat,
+      "lon":        lon,
+      "units":      "imperial",
+      "appid":      "f8eca089b2dc20d458b0079a2d2dcd13"}; 
+  }
+  else
+  {
+    var zipcode = arguments[0];
+    var apiParams = {
+      "zip":        zipcode + ",us",
+      "units":      "imperial",
+      "appid":      "f8eca089b2dc20d458b0079a2d2dcd13"}; 
+  }
 
-        // puts weather data into DOM 
-        $(".city").html('<h1>' + json['name'].toUpperCase() + '</h1>');  
-        $(".temperature").html('<h2><span id="temp">' + Math.floor(json['main'].temp) + '</span>&deg <span id="temp-conversion">F</span></h2>');
-        $(".description").html('<h2>' + json['weather'][0].description.toUpperCase() + '</h2>');
-        $(".humidity").html('<h2>HUMIDITY ' + json['main'].humidity + '%</h2>');
-        // stores weather direction into var
-        var card = degreesToDirection(json['wind'].deg).toLowerCase();
+  $.getJSON(openWeatherApi, apiParams, function(json) {
+    // handle api error
+    if (json['cod'] !== 200)
+    {
+      $(".city").html('<h1>Sorry, technical error try again another time!</h1>'); 
+    }
 
-        // puts windspeed into DOM, uses Wind Icon for direction
-        $(".windspeed").html('<h2>WIND ' + Math.floor(json['wind'].speed) + 'MPH ' + degreesToDirection(json['wind'].deg) + ' <i class="wi wi-wind wi-from-' + card + '"></i></h2>');
-        $(".city").append('<h2><i id="w-icon" class="wi wi-owm-' + json['weather'][0].id + '"></i></h2>');
+    // puts weather data into DOM 
+    $(".city").html('<h1>' + json['name'].toUpperCase() + '</h1>');  
+    $(".temperature").html('<h2><span id="temp">' + Math.floor(json['main'].temp) + '</span>&deg <span id="temp-conversion">F</span></h2>');
+    $(".description").html('<h2>' + json['weather'][0].description.toUpperCase() + '</h2>');
+    $(".humidity").html('<h2>HUMIDITY ' + json['main'].humidity + '%</h2>');
+    // stores weather direction into var
+    var card = degreesToDirection(json['wind'].deg).toLowerCase();
 
-        // this determines the size of photo to get from flickr
-        // and also the orientation that we need eg. landscape vs portrait
-        var intVPWidth = window.innerWidth;
-        var intVPHeight = window.innerHeight;
+    // puts windspeed into DOM, uses Wind Icon for direction
+    $(".windspeed").html('<h2>WIND ' + Math.floor(json['wind'].speed) + 'MPH ' + degreesToDirection(json['wind'].deg) + ' <i class="wi wi-wind wi-from-' + card + '"></i></h2>');
+    $(".city").append('<h2><i id="w-icon" class="wi wi-owm-' + json['weather'][0].id + '"></i></h2>');
 
-        // weather icon variable used for flickr photo search keywords
-        var owIconID = json['weather'][0].icon; 
+    // this determines the size of photo to get from flickr
+    // and also the orientation that we need eg. landscape vs portrait
+    var intVPWidth = window.innerWidth;
+    var intVPHeight = window.innerHeight;
 
-        // uses viewport width and height to determine portrait
-        // or landscape. open weather icon id will determine what
-        // keywords to search flickr for. 
-        // builds appropriate weather photo into DOM
-        // puts photo attribution and license infor into DOM
-        displayWeatherPhoto(intVPWidth, intVPHeight, owIconID);
-      }); 
+    // weather icon variable used for flickr photo search keywords
+    var owIconID = json['weather'][0].icon; 
 
-}
-
-// displays weather called with zip code
-function displayZipWeather(zipcode)
-{
+    // uses viewport width and height to determine portrait
+    // or landscape. open weather icon id will determine what
+    // keywords to search flickr for. 
+    // builds appropriate weather photo into DOM
+    // puts photo attribution and license infor into DOM
+    displayWeatherPhoto(intVPWidth, intVPHeight, owIconID);
+  }); 
 
 }
 
