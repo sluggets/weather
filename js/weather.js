@@ -69,6 +69,22 @@ $(document).ready(function() {
     $('#timpic').toggle(600);
   });
 
+  $('button').click(function(){
+    var zipVal =  document.getElementById("zipcode").value;
+        
+    if (zipVal.length !== 5)
+    {
+      document.getElementById("zipLabel").textContent = "PLEASE enter a 5 digit U.S. zip code only";
+    }
+    else
+    {
+      document.getElementById("zipLabel").textContent = "THANK YOU!";
+    }
+    
+        
+    console.log(zipVal + typeof zipVal + zipVal.length);
+  });  
+
   $('.footer').css('text-shadow', '0px 0px 19px black');
   
 });
