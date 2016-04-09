@@ -108,12 +108,10 @@ function displayWeather()
     if (json['wind'].deg)
     {
       var deg = json['wind'].deg;
-      console.log("inside real");
     }
     else
     {
       var deg = 283;
-      console.log("inside fake");
     }
     
     var card = degreesToDirection(deg).toLowerCase();
