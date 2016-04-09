@@ -1,5 +1,9 @@
 $(document).ready(function() {
+  
+  // display zip code entry in case user denies
+  // geolocation permission or ignores it
   $(".zip-entry").css("display", "block");
+
   // if geolocation is accepted by user/availabe, use it!
   if (navigator.geolocation)
   {
@@ -41,18 +45,15 @@ $(document).ready(function() {
   } 
   else
   {
+    // browser doesn't support geolocation
     $(".zip-entry").css("display", "block");
   }
-  /*$('#temp-conversion').click(function() {
-    var toConvert =  document.getElementById("temp");
-    console.log(toConvert);
-  });*/
+
   $(document).on('click', '#temp-conversion', function() {
     var currentTemp =  document.getElementById("temp").textContent;
     var tempType = document.getElementById("temp-conversion").textContent;
 
     fahrToCel(tempType, currentTemp);
-    //console.log(fTemp, tempType);
   });
 
   // mini portfolio navigation
