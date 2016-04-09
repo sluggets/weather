@@ -173,6 +173,7 @@ function displayWeatherPhoto(intVPWidth, intVPHeight, owIconID)
       "method"        :"flickr.photos.search",
       "api_key"       :"7489f6e27e5cfc416ebe333a830abc1e",
       "tags"          : tagString,
+      "tag_mode"      :"all",
       "license"       :"1,2,3,4,5,6,7,8",
       "extras"        :"o_dims,url_l,url_m,license",
       "content_type"  :"1",
@@ -236,10 +237,10 @@ function owIconIdSwitch(owIconID)
   switch (owIconID)
   {
     case "01d":
-      tagString = 'clear,sunny,sky'; 
+      tagString = 'sunny,sky'; 
       break;
     case "01n":
-      tagString = 'starry,night';  
+      tagString = 'stars,night,sky';  
       break;
     case "02d":
     case "03d":
@@ -249,26 +250,26 @@ function owIconIdSwitch(owIconID)
     case "02n":
     case "03n":
     case "04n":
-      tagString = 'nighttime,night,clouds,cloudy';
+      tagString = 'night,clouds,sky';
       break;
     case "09d":
     case "10d":
-      tagString = 'rainy,showers,rain';
+      tagString = 'showers,rain,sky';
       break;
     case "09n":
     case "10n":
-      tagString = 'rainy,night,nightime,rain';
+      tagString = 'night,sky,rain';
       break;
     case "13d":
     case "13n":
-      tagString = 'snow,snowy,snowing';
+      tagString = 'snow,sky';
       break;
     case "50d":
     case "50n":
-      tagString = 'mist,fog,foggy,misty';
+      tagString = 'mist,fog';
       break;
     default:
-      tagString = 'skyline, sky'; 
+      tagString = 'sky'; 
       break;
   } 
 
